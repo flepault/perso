@@ -1,0 +1,14 @@
+###############
+# Deploiement #
+###############
+
+mkdir MassEnginProcessor
+mkdir MassEnginProcessor/logs
+mkdir MassEnginProcessor/files
+
+chmod +x *.jar
+chmod +x *.sh
+
+./startMassEngineProcessor.sh
+
+./stopMassEngineProcessor.sh
