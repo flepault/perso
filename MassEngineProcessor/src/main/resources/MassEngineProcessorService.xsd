@@ -12,7 +12,7 @@ version="1.0" targetNamespace="http://bean.ws.massengineprocessor.fl.com/">
 	<xs:complexType>
         <xs:sequence>
             <xs:element name="name" type="xs:string"/>
-            <xs:element name="bytes" type="xs:base64Binary"/>
+            <xs:element name="bytes" type="xs:string"/>
         </xs:sequence>
 	</xs:complexType>
 </xs:element>

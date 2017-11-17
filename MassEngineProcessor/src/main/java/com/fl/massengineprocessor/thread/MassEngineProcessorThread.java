@@ -2,83 +2,41 @@ package com.fl.massengineprocessor.thread;
 
 import org.apache.log4j.Logger;
 
-import com.fl.massengineprocessor.engine.ExecutorPool;
-import com.fl.massengineprocessor.engine.ExecutorThread;
-import com.fl.massengineprocessor.engine.FileManagment;
+import com.fl.lib.engine.ExecutorPool;
+import com.fl.lib.thread.ProcessorThread;
 
-public class MassEngineProcessorThread extends ExecutorThread{
-	
-	
+public class MassEngineProcessorThread extends ProcessorThread{
+
 	private final static Logger logger = Logger.getLogger(MassEngineProcessorThread.class);	
-	
-	private ExecutorPool<MassEngineProcessorThread> massEngineProcessorPool;
-		
-	private long getThreadSleepTime;
-	private long getThreadShutdownCounter;
+
+	protected ExecutorPool<MassEngineProcessorThread> processorPool;
 
 	public MassEngineProcessorThread(ExecutorPool<MassEngineProcessorThread> massEngineProcessorPool,long getThreadSleepTime,long getThreadShutdownCounter) {
-		super();
-		this.massEngineProcessorPool = massEngineProcessorPool;
-		this.getThreadSleepTime = getThreadSleepTime;
-		this.getThreadShutdownCounter = getThreadShutdownCounter;
-		logger.info(this.getName()+" : launched");
+		super(getThreadSleepTime,getThreadShutdownCounter);
+		this.processorPool = massEngineProcessorPool;
 		//this.dao = new MassEngineProcessorDAO();
 	}
-	
-	protected void shutdown() {
-		massEngineProcessorPool.removeInstanceToStack(this);
-		run = false;
-		logger.info(this.getName()+" : shutdowned");
-	}	
-
-	boolean run = true;
-
-	private int count=0;
 
 	@Override
-	public void run() {
+	synchronized protected void processRequest() {
+		logger.debug(request);
+
+		String[] fields = request.split("\\,");
+
+		logger.debug(this.getName()+": Fields [ND= " + fields[0] + " , Numero Compte=" + fields[1] + " , Rateplan=" + fields[2] + " , Formules=" + fields[3] + " , débit=" + fields[4] + " , durée=" + fields[5]+  "]");
+
+		//dao.changeTM(Integer.parseInt(fields[0]), Integer.parseInt(fields[1]), Integer.parseInt(fields[2]), fields[3]);
 		
-		while(run){
-
-			if(request == null){
-
-				if(count>=getThreadShutdownCounter){					
-					shutdown();
-				}else{
-					try {						
-						increase();
-						Thread.sleep(getThreadSleepTime); 
-					}
-					catch (InterruptedException e) {} 
-				}
-			}else{
-
-				reset();
-				
-				logger.debug(request);
-
-				String[] fields = request.split("\\,");
-
-				logger.debug(this.getName()+": Fields [ND= " + fields[0] + " , Numero Compte=" + fields[1] + " , Rateplan=" + fields[2] + " , Formules=" + fields[3] + " , débit=" + fields[4] + " , durée=" + fields[5]+  "]");
-				
-				//dao.changeTM(Integer.parseInt(fields[0]), Integer.parseInt(fields[1]), Integer.parseInt(fields[2]), fields[3]);
-				
-				FileManagment.renameFile(request);				
-				
-				massEngineProcessorPool.pushInstanceToStack(this);
-				
-
-			}
-			
-		}
 	}
 
-	private void reset() {
-		count=0;
+	@Override
+	synchronized protected void removeFromPool() {
+		processorPool.removeInstanceToStack(this);
 	}
 
-	private void increase() {
-		count++;		
+	@Override
+	synchronized public void pushToPool() {
+		processorPool.pushInstanceToStack(this);		
 	}
 
 }

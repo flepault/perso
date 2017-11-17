@@ -1,19 +1,20 @@
-package com.fl.massengineprocessor.engine;
+package com.fl.lib.engine;
 
 import java.util.Stack;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.fl.lib.thread.ProcessorThread;
+
 @Component
-public class ExecutorPool<T extends ExecutorThread> {
+public class ExecutorPool<T extends ProcessorThread> {
 
 	volatile private Integer openInstance = 0;
 
 	volatile private Stack<T> pool;
 	private Integer maxActiveThreads;
 	
-	public ExecutorPool(@Value("${pool.size.max.value}")Integer maxActiveThreads)
+	public ExecutorPool(Integer maxActiveThreads)
 	{
 		this.pool = new Stack<T>();
 		this.maxActiveThreads = maxActiveThreads;
@@ -24,7 +25,7 @@ public class ExecutorPool<T extends ExecutorThread> {
 		return pool.size();
 	}
 	
-	synchronized public ExecutorThread popInstanceFromStack() {
+	synchronized public T popInstanceFromStack() {
 		if (pool.isEmpty())
 			return null;
 
@@ -37,7 +38,7 @@ public class ExecutorPool<T extends ExecutorThread> {
 		pool.push(executorThread);
 	}
 
-	synchronized public void removeInstanceToStack(ExecutorThread executorInstance){
+	synchronized public void removeInstanceToStack(T executorInstance){
 		pool.remove(executorInstance);
 		if( openInstance > 0 )
 		{
@@ -46,7 +47,6 @@ public class ExecutorPool<T extends ExecutorThread> {
 	}
 
 	synchronized public void pushInstanceToStack(T executorInstance) {
-		executorInstance.cleanRequest();
 		pool.push(executorInstance);
 	}
 

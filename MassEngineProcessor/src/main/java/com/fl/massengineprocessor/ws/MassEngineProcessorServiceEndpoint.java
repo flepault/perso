@@ -13,8 +13,8 @@ import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import org.springframework.ws.soap.SoapBodyException;
 
-import com.fl.massengineprocessor.engine.FileManagment;
-import com.fl.massengineprocessor.thread.InputExecutorThread;
+import com.fl.lib.engine.FileManagment;
+import com.fl.massengineprocessor.thread.MassEngineInputExecutorThread;
 import com.fl.massengineprocessor.ws.bean.MassEngineProcessorServiceRequest;
 import com.fl.massengineprocessor.ws.bean.MassEngineProcessorServiceResponse;
 
@@ -27,7 +27,7 @@ public class MassEngineProcessorServiceEndpoint {
 	private static final String NAMESPACE_URI = "http://bean.ws.massengineprocessor.fl.com/";	
 
 	@Autowired
-	private InputExecutorThread inputExecutorThread;
+	private MassEngineInputExecutorThread inputExecutorThread;
 
 	//LocalPart à mettre en Majuscule
 	//Nom du service, Object en entrée + Request , Object en sortie + Response
@@ -35,20 +35,23 @@ public class MassEngineProcessorServiceEndpoint {
 	public @ResponsePayload MassEngineProcessorServiceResponse massEngineProcessorServiceRequest(@RequestPayload MassEngineProcessorServiceRequest request){
 
 		MassEngineProcessorServiceResponse resp = null;	
-		
+
 		logger.info("New SOAP request received, request id : "+request.getId()+", fileName : "+request.getFile().getName() );
-		
+
 		try{	
 			ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decodeBase64(request.getFile().getBytes()));			
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(bais));
 			String line;
 			while ((line = br.readLine()) != null) {
-				
-							
-				FileManagment.createFile(line);
 
-				inputExecutorThread.pushElement(line);
+				if(!line.equals(""))	{		
+
+					FileManagment.createFile(line);
+
+					inputExecutorThread.pushElement(line);
+
+				}
 
 			}
 			resp = new MassEngineProcessorServiceResponse();
