@@ -1,8 +1,8 @@
-package com.fl.lib.thread;
+package com.fl.engineprocessor.thread;
 
 import org.apache.log4j.Logger;
 
-import com.fl.lib.engine.FileManagment;
+import com.fl.engineprocessor.engine.FileManagment;
 
 public abstract class ProcessorThread extends Thread{
 

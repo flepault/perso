@@ -2,8 +2,8 @@ package com.fl.massengineprocessor.thread;
 
 import org.apache.log4j.Logger;
 
-import com.fl.lib.engine.ExecutorPool;
-import com.fl.lib.thread.ProcessorThread;
+import com.fl.engineprocessor.engine.ExecutorPool;
+import com.fl.engineprocessor.thread.ProcessorThread;
 
 public class MassEngineProcessorThread extends ProcessorThread{
 

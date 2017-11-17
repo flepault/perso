@@ -1,4 +1,4 @@
-package com.fl.massengineprocessor;
+package com.fl.postgmdprocessor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,19 +11,19 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 
 import com.fl.engineprocessor.engine.ExecutorPool;
-import com.fl.massengineprocessor.thread.MassEngineInputExecutorThread;
-import com.fl.massengineprocessor.thread.MassEngineOutputExecutorThread;
-import com.fl.massengineprocessor.thread.MassEngineProcessorThread;
+import com.fl.postgmdprocessor.thread.PostGMDInputExecutorThread;
+import com.fl.postgmdprocessor.thread.PostGMDOutputExecutorThread;
+import com.fl.postgmdprocessor.thread.PostGMDProcessorThread;
 
 @SpringBootApplication
 @EnableAutoConfiguration
-public class MassEngineProcessor {
+public class PostGMDProcessor {
 
 	@Autowired
-	private MassEngineInputExecutorThread inputExecutorThread; 
+	private PostGMDInputExecutorThread inputExecutorThread; 
 	
 	@Autowired
-	private MassEngineOutputExecutorThread outputExecutorThread; 
+	private PostGMDOutputExecutorThread outputExecutorThread; 
 		
 	@Bean
 	public TaskExecutor taskExecutor() {
@@ -31,8 +31,8 @@ public class MassEngineProcessor {
 	}
 	
 	@Bean
-	public ExecutorPool<MassEngineProcessorThread> executorPool(@Value("${pool.size.max.value}")Integer maxActiveThreads){
-		return new ExecutorPool<MassEngineProcessorThread>(maxActiveThreads);
+	public ExecutorPool<PostGMDProcessorThread> executorPool(@Value("${pool.size.max.value}")Integer maxActiveThreads){
+		return new ExecutorPool<PostGMDProcessorThread>(maxActiveThreads);
 	}
 
 	@Bean
@@ -49,6 +49,6 @@ public class MassEngineProcessor {
 	}
 	
 	public static void main(String[] args) {
-		SpringApplication.run(MassEngineProcessor.class, args);				
+		SpringApplication.run(PostGMDProcessor.class, args);				
 	}
 }
