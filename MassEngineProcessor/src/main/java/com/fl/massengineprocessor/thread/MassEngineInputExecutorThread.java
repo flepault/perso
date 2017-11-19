@@ -11,6 +11,11 @@ public class MassEngineInputExecutorThread extends InputExecutorThread<MassEngin
 	public MassEngineInputExecutorThread(ExecutorPool<MassEngineProcessorThread> processorPool) {
 		super(processorPool);
 	}
+
+	@Override
+	protected void loadQueue() {
+		//Not necessary;
+	}
 	
 
 }

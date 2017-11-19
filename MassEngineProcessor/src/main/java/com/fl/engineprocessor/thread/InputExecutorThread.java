@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import com.fl.engineprocessor.engine.ExecutorPool;
 import com.fl.engineprocessor.engine.FileManagment;
 
-public class InputExecutorThread<T extends ProcessorThread> extends Thread{
-	
+public abstract class InputExecutorThread<T extends ProcessorThread> extends Thread{
+
 	//private static Logger logger = Logger.getLogger(InputExecutorThread.class.getName());
 
 	@Value("${input.thread.sleep.time}")
@@ -50,8 +50,13 @@ public class InputExecutorThread<T extends ProcessorThread> extends Thread{
 			}else {
 
 				if(queue.isEmpty()){				
-					try { Thread.sleep(getInputThreadSleepTime); }
-					catch (InterruptedException e) {}						
+					try { 
+						
+						Thread.sleep(getInputThreadSleepTime); 
+						
+						loadQueue();
+						
+					}catch (InterruptedException e) {}						
 				}else{			
 					String request = removeElement();
 
@@ -65,21 +70,23 @@ public class InputExecutorThread<T extends ProcessorThread> extends Thread{
 		}
 
 	}
-	
+
+	protected abstract void loadQueue();
+
 	private T getInstanceOfT()
-    {
-        ParameterizedType superClass = (ParameterizedType) getClass().getGenericSuperclass();
-        Class<T> type = (Class<T>) superClass.getActualTypeArguments()[0];
-        try
-        {
-        	Constructor<T> constructor = type.getConstructor(ExecutorPool.class,long.class,long.class);
-            return constructor.newInstance(processorPool,getThreadSleepTime,getThreadShutdownCounter);
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
+	{
+		ParameterizedType superClass = (ParameterizedType) getClass().getGenericSuperclass();
+		Class<T> type = (Class<T>) superClass.getActualTypeArguments()[0];
+		try
+		{
+			Constructor<T> constructor = type.getConstructor(ExecutorPool.class,long.class,long.class);
+			return constructor.newInstance(processorPool,getThreadSleepTime,getThreadShutdownCounter);
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
 
 	synchronized private String removeElement(){
 		return (String)queue.pop();
