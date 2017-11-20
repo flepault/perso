@@ -12,7 +12,7 @@ public class PostGMDProcessorThread extends ProcessorThread{
 
 	protected ExecutorPool<PostGMDProcessorThread> processorPool;
 	
-	private PostGMDProcessorDAO dao;
+	private PostGMDProcessorDAO dao ;
 
 	public PostGMDProcessorThread(ExecutorPool<PostGMDProcessorThread> massEngineProcessorPool,long getThreadSleepTime,long getThreadShutdownCounter) {
 		super(getThreadSleepTime,getThreadShutdownCounter);
