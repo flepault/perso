@@ -22,6 +22,7 @@ public class PostGMDInputExecutorThread extends InputExecutorThread<PostGMDProce
 		
 		dao.getNewEntries();
 		
+		
 	}
 	
 
