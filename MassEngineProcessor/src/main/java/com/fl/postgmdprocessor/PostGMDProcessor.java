@@ -7,10 +7,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 
 import com.fl.engineprocessor.engine.ExecutorPool;
+import com.fl.postgmdprocessor.dao.DailyPostGMDProcessorDAO;
+import com.fl.postgmdprocessor.dao.OnGoingPostGMDProcessorDAO;
+import com.fl.postgmdprocessor.dao.PostGMDProcessorDAO;
 import com.fl.postgmdprocessor.thread.PostGMDInputExecutorThread;
 import com.fl.postgmdprocessor.thread.PostGMDOutputExecutorThread;
 import com.fl.postgmdprocessor.thread.PostGMDProcessorThread;
@@ -24,6 +28,7 @@ public class PostGMDProcessor {
 	
 	@Autowired
 	private PostGMDOutputExecutorThread outputExecutorThread; 
+	
 		
 	@Bean
 	public TaskExecutor taskExecutor() {
@@ -46,6 +51,22 @@ public class PostGMDProcessor {
 			}
 		};
 
+	}
+	
+	@Bean("PostGMDProcessorDAO")
+	@Profile("daily")
+	public PostGMDProcessorDAO getDailyPostGMDProcessorDAO(){
+	
+		return new DailyPostGMDProcessorDAO();
+		
+	}
+	
+	@Bean("PostGMDProcessorDAO")
+	@Profile("ongoing")
+	public PostGMDProcessorDAO getOnGoingPostGMDProcessorDAO(){
+			
+		return new OnGoingPostGMDProcessorDAO();
+		
 	}
 	
 	public static void main(String[] args) {

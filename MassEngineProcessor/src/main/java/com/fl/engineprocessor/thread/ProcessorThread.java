@@ -1,12 +1,13 @@
 package com.fl.engineprocessor.thread;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fl.engineprocessor.engine.FileManagment;
 
 public abstract class ProcessorThread extends Thread{
 
-	private final static Logger logger = Logger.getLogger(ProcessorThread.class);	
+	private final static Logger logger = LoggerFactory.getLogger(ProcessorThread.class);	
 
 	volatile protected Boolean close = false;
 
@@ -20,7 +21,7 @@ public abstract class ProcessorThread extends Thread{
 	private long getThreadShutdownCounter;
 
 	public ProcessorThread(long getThreadSleepTime,long getThreadShutdownCounter) {
-		super("ExecutorInstance-");
+		super("ProcessorThread-");
 		this.setName(this.getName()+this.getId());
 		this.getThreadSleepTime = getThreadSleepTime;
 		this.getThreadShutdownCounter = getThreadShutdownCounter;

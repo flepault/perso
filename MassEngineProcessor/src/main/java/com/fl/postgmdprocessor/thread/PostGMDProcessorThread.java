@@ -1,6 +1,7 @@
 package com.fl.postgmdprocessor.thread;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fl.engineprocessor.engine.ExecutorPool;
 import com.fl.engineprocessor.thread.ProcessorThread;
@@ -8,21 +9,22 @@ import com.fl.postgmdprocessor.dao.PostGMDProcessorDAO;
 
 public class PostGMDProcessorThread extends ProcessorThread{
 
-	private final static Logger logger = Logger.getLogger(PostGMDProcessorThread.class);	
+	private final static Logger logger = LoggerFactory.getLogger(PostGMDProcessorThread.class);	
 
 	protected ExecutorPool<PostGMDProcessorThread> processorPool;
 	
 	private PostGMDProcessorDAO dao ;
 
-	public PostGMDProcessorThread(ExecutorPool<PostGMDProcessorThread> massEngineProcessorPool,long getThreadSleepTime,long getThreadShutdownCounter) {
+	public PostGMDProcessorThread(ExecutorPool<PostGMDProcessorThread> massEngineProcessorPool,long getThreadSleepTime,long getThreadShutdownCounter,PostGMDProcessorDAO dao) {
 		super(getThreadSleepTime,getThreadShutdownCounter);
 		this.processorPool = massEngineProcessorPool;
-		this.dao = new PostGMDProcessorDAO();
+		this.dao = dao;
 	}
 
 	@Override
 	synchronized protected void processRequest() {
-		logger.debug(request);
+		logger.info(this.getName()+":"+request);
+		dao.singlePostGMDProcess(request);
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package com.fl.engineprocessor.thread;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.ParameterizedType;
+import java.util.List;
 import java.util.Stack;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +26,7 @@ public abstract class InputExecutorThread<T extends ProcessorThread> extends Thr
 
 	private volatile Stack<String> queue;
 
-	private ExecutorPool<T> processorPool;
+	protected ExecutorPool<T> processorPool;
 
 	volatile protected Boolean close = false;	
 
@@ -73,20 +72,22 @@ public abstract class InputExecutorThread<T extends ProcessorThread> extends Thr
 
 	protected abstract void loadQueue();
 
-	private T getInstanceOfT()
-	{
-		ParameterizedType superClass = (ParameterizedType) getClass().getGenericSuperclass();
-		Class<T> type = (Class<T>) superClass.getActualTypeArguments()[0];
-		try
-		{
-			Constructor<T> constructor = type.getConstructor(ExecutorPool.class,long.class,long.class);
-			return constructor.newInstance(processorPool,getThreadSleepTime,getThreadShutdownCounter);
-		}
-		catch (Exception e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
+//	private T getInstanceOfT()
+//	{
+//		ParameterizedType superClass = (ParameterizedType) getClass().getGenericSuperclass();
+//		Class<T> type = (Class<T>) superClass.getActualTypeArguments()[0];
+//		try
+//		{
+//			Constructor<T> constructor = type.getConstructor(ExecutorPool.class,long.class,long.class);
+//			return constructor.newInstance(processorPool,getThreadSleepTime,getThreadShutdownCounter);
+//		}
+//		catch (Exception e)
+//		{
+//			throw new RuntimeException(e);
+//		}
+//	}
+	
+	protected abstract T getInstanceOfT();
 
 	synchronized private String removeElement(){
 		return (String)queue.pop();
@@ -94,5 +95,9 @@ public abstract class InputExecutorThread<T extends ProcessorThread> extends Thr
 
 	synchronized public void pushElement(String request){
 		queue.push(request);
+	}
+	
+	synchronized public void pushListElement(List<String> requestList){
+		queue.addAll(requestList);
 	}
 }

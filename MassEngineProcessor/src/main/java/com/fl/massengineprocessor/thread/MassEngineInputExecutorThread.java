@@ -16,6 +16,11 @@ public class MassEngineInputExecutorThread extends InputExecutorThread<MassEngin
 	protected void loadQueue() {
 		//Not necessary;
 	}
+
+	@Override
+	protected MassEngineProcessorThread getInstanceOfT() {
+		return new MassEngineProcessorThread(processorPool, getThreadSleepTime, getThreadShutdownCounter);
+	}
 	
 
 }

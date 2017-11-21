@@ -5,19 +5,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 
+@Configurable(preConstruction = true)
+public class MassEngineProcessorDAO {
 
-public class MassEngineProcessorDAO{
-
-	
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
-
+	protected JdbcTemplate jdbcTemplate;
+	
 //	
 //	ocit_tools.AvisoChangeTM ( pionCoId in integer,
 //            pionTMCode in integer,

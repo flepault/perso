@@ -2,7 +2,7 @@
 	
 echo "MassEngineProcessor is starting..."		
 
-nohup ./MassEngineProcessor-1.0.0.jar -Dlogging.level.com.fl.massengineprocessor=DEBUG &
+nohup ./MassEngineProcessor.jar --spring.config.name=massengineprocessor&
 
 sleep 5
 MEP_PID=`ps -edf | grep $LOGNAME | grep "java" | grep "MassEngineProcessor"| awk '{print $2}'`
