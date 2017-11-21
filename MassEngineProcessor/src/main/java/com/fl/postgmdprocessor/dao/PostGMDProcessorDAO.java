@@ -26,7 +26,7 @@ public abstract class PostGMDProcessorDAO{
 
 		if(requestList!=null && requestList.size()!=0){
 
-			String sql = "update oci_postgmd_process set status = 3 where request in (:REQUEST_ID_LIST)";
+			String sql = RequestTemplate.UPDATE_TO_WAITING_STATUS;
 
 			NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
 			namedParameterJdbcTemplate.update(sql, Collections.singletonMap("REQUEST_ID_LIST",requestList));

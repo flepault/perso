@@ -8,7 +8,7 @@ public class OnGoingPostGMDProcessorDAO extends PostGMDProcessorDAO{
 	@Override	
 	public List<String> getNewEntries() {
 
-		List<String> list = jdbcTemplate.queryForList("select request from oci_postgmd_process where status = 2 and rownum <= 1000", String.class);
+		List<String> list = jdbcTemplate.queryForList(RequestTemplate.SELECT_REQUEST, String.class);
 
 		updateRequestStatus(list);
 		return	list;
