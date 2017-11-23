@@ -30,8 +30,8 @@ public class DailyPostGMDInputExecutorThread extends InputExecutorThread<PostGMD
 		
 		if(requestList==null || requestList.size()==0)
 			close=true;
-
-		pushListElement(requestList);
+		else
+			pushListElement(requestList);
 
 	}
 

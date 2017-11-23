@@ -84,21 +84,6 @@ public abstract class InputExecutorThread<T extends ProcessorThread> extends Thr
 
 	protected abstract void loadQueue();
 
-	//	private T getInstanceOfT()
-	//	{
-	//		ParameterizedType superClass = (ParameterizedType) getClass().getGenericSuperclass();
-	//		Class<T> type = (Class<T>) superClass.getActualTypeArguments()[0];
-	//		try
-	//		{
-	//			Constructor<T> constructor = type.getConstructor(ExecutorPool.class,long.class,long.class);
-	//			return constructor.newInstance(processorPool,getThreadSleepTime,getThreadShutdownCounter);
-	//		}
-	//		catch (Exception e)
-	//		{
-	//			throw new RuntimeException(e);
-	//		}
-	//	}
-
 	protected abstract T getInstanceOfT();
 
 	synchronized private String removeElement(){

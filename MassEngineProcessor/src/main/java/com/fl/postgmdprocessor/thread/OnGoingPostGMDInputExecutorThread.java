@@ -27,12 +27,12 @@ public class OnGoingPostGMDInputExecutorThread extends InputExecutorThread<PostG
 	@Override
 	protected void loadQueue() {		
 		
-		List<String> requestList = dao.getNewEntries();
+		List<String> list = dao.getNewEntries();
 		
-		for(String request:requestList)
-			FileManagment.createFile(request);
+		for(String str:list)
+			FileManagment.createFile(str);
 
-		pushListElement(requestList);
+		pushListElement(list);
 
 	}
 

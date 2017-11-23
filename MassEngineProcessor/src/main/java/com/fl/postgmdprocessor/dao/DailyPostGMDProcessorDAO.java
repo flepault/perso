@@ -1,34 +1,89 @@
 package com.fl.postgmdprocessor.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+
+import oracle.jdbc.OracleTypes;
 
 public class DailyPostGMDProcessorDAO extends PostGMDProcessorDAO{
 
-	private List<String> getNewEntriesProcess() {
+	private boolean int_customer_data_done = false;
+	private boolean wimax_customer_data_done = false;
+	private boolean gsm_customer_data_done = false;
 
-		List<String> listProcess = jdbcTemplate.queryForList(RequestTemplate.SELECT_REQUEST_PROCESS,String.class);
 
-		return listProcess;
+	private List<String> getNewEntriesInt() {
+
+		return jdbcTemplate.queryForList(RequestTemplate.SELECT_REQUEST_INT,String.class);
 
 	}
 
-	private List<String> getNewEntriesOnHold() {
+	private List<String> getNewEntriesWimax() {
 
-		List<String> listProcess = jdbcTemplate.queryForList(RequestTemplate.SELECT_REQUEST_ONHOLD,String.class);
+		return jdbcTemplate.queryForList(RequestTemplate.SELECT_REQUEST_WIMAX,String.class);
 
-		return listProcess;
+	}
+
+	private List<String> getNewEntriesGsm() {
+
+		return jdbcTemplate.queryForList(RequestTemplate.SELECT_REQUEST_GSM,String.class);
 
 	}
 
 	@Override
 	public List<String> getNewEntries() {
 
-		List<String> list = getNewEntriesOnHold();
-		if(list==null || list.size()==0)
-			return getNewEntriesProcess();
-		return list;		
+		if(!int_customer_data_done){
+			List<String> list = getNewEntriesInt();
+			if(list==null || list.size()==0){
+				int_customer_data_done=true;
+				return getNewEntries();
+			}else
+				return list;
+		}else if(!wimax_customer_data_done){
+			List<String> list = getNewEntriesWimax();
+			if(list==null || list.size()==0){
+				wimax_customer_data_done=true;
+				return getNewEntries();
+			}else
+				return list;
+		}else if(!gsm_customer_data_done){
+			List<String> list = getNewEntriesGsm();
+			if(list==null || list.size()==0){
+				gsm_customer_data_done=true;
+				return getNewEntries();
+			}else
+				return list;
+		}
+		return null;		
 	}
 
+	@Override
+	public void singlePostGMD(String str){
+
+		SimpleJdbcCall jdbcCall = null;
+		
+		if(!int_customer_data_done){
+			jdbcCall = new SimpleJdbcCall(jdbcTemplate).withSchemaName("SPERTO").withCatalogName("OCI_POSTGMD").withProcedureName("DailySinglePostGMDInt");
+		}else if(!wimax_customer_data_done){
+			jdbcCall = new SimpleJdbcCall(jdbcTemplate).withSchemaName("SPERTO").withCatalogName("OCI_POSTGMD").withProcedureName("DailySinglePostGMDWimax");
+		}else if(!gsm_customer_data_done){
+			jdbcCall = new SimpleJdbcCall(jdbcTemplate).withSchemaName("SPERTO").withCatalogName("OCI_POSTGMD").withProcedureName("DailySinglePostGMDGsm");
+		} else
+			return;
+
+		jdbcCall.addDeclaredParameter(new SqlParameter("in_coId",  OracleTypes.INTEGER));
+
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("in_coId",Integer.parseInt(str));
+
+		jdbcCall.execute(map);	
+
+	}
 
 
 }

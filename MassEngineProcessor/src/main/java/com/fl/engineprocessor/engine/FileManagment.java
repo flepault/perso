@@ -55,7 +55,6 @@ public class FileManagment {
 
 	public static void renameFile(String request){
 
-
 		File f = new File("files/"+stringToHex(request)+".in");		
 		f.renameTo(new File("files/"+stringToHex(request)+".out"));
 	}
