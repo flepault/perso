@@ -6,7 +6,7 @@ export ORACLE_SID=${ORACLE_SID}
 	
 echo "MassEngineProcessor is starting..."		
 
-nohup ./MassEngineProcessor.jar --spring.config.name=massengineprocessor&
+nohup ./MassEngineProcessor.jar --spring.profiles.active=massengineprocessor --spring.config.name=massengineprocessor&
 
 sleep 5
 MEP_PID=`ps -edf | grep $LOGNAME | grep "java" | grep "MassEngineProcessor"| awk '{print $2}'`

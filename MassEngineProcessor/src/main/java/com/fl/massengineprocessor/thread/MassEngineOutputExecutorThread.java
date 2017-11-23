@@ -3,6 +3,7 @@ package com.fl.massengineprocessor.thread;
 import java.math.BigInteger;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.annotation.Profile;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.WebServiceTemplate;
@@ -12,6 +13,7 @@ import com.fl.massengineprocessor.ws.skeleton.ObjectFactory;
 import com.fl.massengineprocessor.ws.skeleton.UpDateTaskItems;
 
 @Component
+@Profile("massengineprocessor")
 public class MassEngineOutputExecutorThread  extends OutputExecutorThread{
 
 	private static Logger logger = Logger.getLogger(MassEngineOutputExecutorThread.class.getName());

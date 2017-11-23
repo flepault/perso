@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import org.apache.log4j.Logger;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -19,6 +20,7 @@ import com.fl.massengineprocessor.ws.bean.MassEngineProcessorServiceRequest;
 import com.fl.massengineprocessor.ws.bean.MassEngineProcessorServiceResponse;
 
 @Endpoint
+@Profile("massengineprocessor")
 public class MassEngineProcessorServiceEndpoint {
 
 	private static Logger logger = Logger.getLogger(MassEngineProcessorServiceEndpoint.class.getName());

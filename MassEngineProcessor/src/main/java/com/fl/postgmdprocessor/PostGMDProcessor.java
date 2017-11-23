@@ -21,6 +21,7 @@ import com.fl.postgmdprocessor.thread.PostGMDProcessorThread;
 
 @SpringBootApplication
 @EnableAutoConfiguration
+@Profile({"ongoing","daily"})
 public class PostGMDProcessor {
 
 	@Autowired
