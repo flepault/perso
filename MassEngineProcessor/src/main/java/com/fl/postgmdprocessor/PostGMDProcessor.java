@@ -12,10 +12,10 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 
 import com.fl.engineprocessor.engine.ExecutorPool;
+import com.fl.engineprocessor.thread.InputExecutorThread;
 import com.fl.postgmdprocessor.dao.DailyPostGMDProcessorDAO;
 import com.fl.postgmdprocessor.dao.OnGoingPostGMDProcessorDAO;
 import com.fl.postgmdprocessor.dao.PostGMDProcessorDAO;
-import com.fl.postgmdprocessor.thread.PostGMDInputExecutorThread;
 import com.fl.postgmdprocessor.thread.PostGMDOutputExecutorThread;
 import com.fl.postgmdprocessor.thread.PostGMDProcessorThread;
 
@@ -24,7 +24,7 @@ import com.fl.postgmdprocessor.thread.PostGMDProcessorThread;
 public class PostGMDProcessor {
 
 	@Autowired
-	private PostGMDInputExecutorThread inputExecutorThread; 
+	private InputExecutorThread<PostGMDProcessorThread> inputExecutorThread; 
 	
 	@Autowired
 	private PostGMDOutputExecutorThread outputExecutorThread; 
@@ -41,7 +41,8 @@ public class PostGMDProcessor {
 	}
 
 	@Bean
-	public CommandLineRunner schedulingRunner(final TaskExecutor executor) {
+	@Profile("ongoing")
+	public CommandLineRunner schedulingRunnerOnGoing(final TaskExecutor executor) {
 		return new CommandLineRunner() {
 
 			@Override
@@ -52,6 +53,20 @@ public class PostGMDProcessor {
 		};
 
 	}
+	
+	@Bean
+	@Profile("daily")
+	public CommandLineRunner schedulingRunnerDaily(final TaskExecutor executor) {
+		return new CommandLineRunner() {
+
+			@Override
+			public void run(String... args) throws Exception {
+				inputExecutorThread.run();
+			}
+		};
+
+	}
+	
 	
 	@Bean("PostGMDProcessorDAO")
 	@Profile("daily")

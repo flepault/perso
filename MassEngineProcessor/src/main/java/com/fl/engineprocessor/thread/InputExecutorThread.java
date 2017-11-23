@@ -41,7 +41,7 @@ public abstract class InputExecutorThread<T extends ProcessorThread> extends Thr
 
 		FileManagment.loadInputFile(queue);
 
-		while(true){
+		while(!close){
 
 			if(processorPool.isPoolUnavailable()){
 				try { Thread.sleep(getPoolSleepTime); }
@@ -50,11 +50,14 @@ public abstract class InputExecutorThread<T extends ProcessorThread> extends Thr
 
 				if(queue.isEmpty()){				
 					try { 
-						
-						Thread.sleep(getInputThreadSleepTime); 
-						
+
 						loadQueue();
-						
+
+						if(queue.isEmpty()){
+							Thread.sleep(getInputThreadSleepTime); 
+						}
+
+
 					}catch (InterruptedException e) {}						
 				}else{			
 					String request = removeElement();
@@ -68,25 +71,34 @@ public abstract class InputExecutorThread<T extends ProcessorThread> extends Thr
 			}
 		}
 
+		if(close){
+			try {
+				Thread.sleep(getInputThreadSleepTime*10);
+				System.exit(0);
+			} catch (InterruptedException e) {
+
+			} 
+		}
+
 	}
 
 	protected abstract void loadQueue();
 
-//	private T getInstanceOfT()
-//	{
-//		ParameterizedType superClass = (ParameterizedType) getClass().getGenericSuperclass();
-//		Class<T> type = (Class<T>) superClass.getActualTypeArguments()[0];
-//		try
-//		{
-//			Constructor<T> constructor = type.getConstructor(ExecutorPool.class,long.class,long.class);
-//			return constructor.newInstance(processorPool,getThreadSleepTime,getThreadShutdownCounter);
-//		}
-//		catch (Exception e)
-//		{
-//			throw new RuntimeException(e);
-//		}
-//	}
-	
+	//	private T getInstanceOfT()
+	//	{
+	//		ParameterizedType superClass = (ParameterizedType) getClass().getGenericSuperclass();
+	//		Class<T> type = (Class<T>) superClass.getActualTypeArguments()[0];
+	//		try
+	//		{
+	//			Constructor<T> constructor = type.getConstructor(ExecutorPool.class,long.class,long.class);
+	//			return constructor.newInstance(processorPool,getThreadSleepTime,getThreadShutdownCounter);
+	//		}
+	//		catch (Exception e)
+	//		{
+	//			throw new RuntimeException(e);
+	//		}
+	//	}
+
 	protected abstract T getInstanceOfT();
 
 	synchronized private String removeElement(){
@@ -96,7 +108,7 @@ public abstract class InputExecutorThread<T extends ProcessorThread> extends Thr
 	synchronized public void pushElement(String request){
 		queue.push(request);
 	}
-	
+
 	synchronized public void pushListElement(List<String> requestList){
 		queue.addAll(requestList);
 	}

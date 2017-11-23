@@ -4,14 +4,31 @@ import java.util.List;
 
 public class DailyPostGMDProcessorDAO extends PostGMDProcessorDAO{
 
-	
-	@Override	
-	public List<String> getNewEntries() {
-		
-		return jdbcTemplate.queryForList(RequestTemplate.SELECT_REQUEST,String.class);
-				
+	private List<String> getNewEntriesProcess() {
+
+		List<String> listProcess = jdbcTemplate.queryForList(RequestTemplate.SELECT_REQUEST_PROCESS,String.class);
+
+		return listProcess;
+
 	}
 
-	
-	
+	private List<String> getNewEntriesOnHold() {
+
+		List<String> listProcess = jdbcTemplate.queryForList(RequestTemplate.SELECT_REQUEST_ONHOLD,String.class);
+
+		return listProcess;
+
+	}
+
+	@Override
+	public List<String> getNewEntries() {
+
+		List<String> list = getNewEntriesOnHold();
+		if(list==null || list.size()==0)
+			return getNewEntriesProcess();
+		return list;		
+	}
+
+
+
 }
