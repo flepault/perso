@@ -23,7 +23,7 @@ public class PostGMDInputExecutorThread extends InputExecutorThread<PostGMDProce
 	}
 
 	@Override
-	protected void loadQueue() {
+	protected void loadQueue() {		
 		
 		List<String> requestList = dao.getNewEntries();
 		
@@ -39,7 +39,6 @@ public class PostGMDInputExecutorThread extends InputExecutorThread<PostGMDProce
 		return new PostGMDProcessorThread(processorPool, getThreadSleepTime, getThreadShutdownCounter,dao);
 	}
 
-
-
+	
 
 }

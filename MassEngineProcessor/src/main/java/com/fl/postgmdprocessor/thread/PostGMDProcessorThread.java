@@ -23,8 +23,10 @@ public class PostGMDProcessorThread extends ProcessorThread{
 
 	@Override
 	synchronized protected void processRequest() {
-		logger.info(this.getName()+":"+request);
-		dao.singlePostGMDProcess(request);
+		logger.debug(this.getName()+":"+request);
+		
+		dao.singlePostGMD(request);
+			
 	}
 
 	@Override

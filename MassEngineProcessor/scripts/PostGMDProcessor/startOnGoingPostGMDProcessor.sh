@@ -2,7 +2,7 @@
 
 export DATABASE_SERVER=${SOISRV_DATABASE_SERVER}
 export DATABASE_PORT=${SOISRV_DATABASE_PORT}
-export SID=${ORACLE_SID}
+export ORACLE_SID=${ORACLE_SID}
 	
 echo "OnGoing PostGMDProcessor is starting..."		
 
