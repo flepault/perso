@@ -1,13 +1,14 @@
 package com.fl.massengineprocessor.thread;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.fl.engineprocessor.engine.ExecutorPool;
 import com.fl.engineprocessor.thread.ProcessorThread;
 
 public class MassEngineProcessorThread extends ProcessorThread{
 
-	private final static Logger logger = Logger.getLogger(MassEngineProcessorThread.class);	
+	private final static Logger logger = LogManager.getLogger(MassEngineProcessorThread.class);	
 
 	protected ExecutorPool<MassEngineProcessorThread> processorPool;
 
