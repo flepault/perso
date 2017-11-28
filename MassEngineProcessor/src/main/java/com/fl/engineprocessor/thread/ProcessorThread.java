@@ -3,6 +3,7 @@ package com.fl.engineprocessor.thread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fl.engineprocessor.engine.ExecutorPool;
 import com.fl.engineprocessor.engine.FileManagment;
 
 public abstract class ProcessorThread extends Thread{
@@ -19,13 +20,17 @@ public abstract class ProcessorThread extends Thread{
 
 	private long getThreadSleepTime;
 	private long getThreadShutdownCounter;
-
-	public ProcessorThread(long getThreadSleepTime,long getThreadShutdownCounter) {
+	
+	@SuppressWarnings("rawtypes")
+	protected ExecutorPool processorPool;
+	
+	public ProcessorThread(long getThreadSleepTime,long getThreadShutdownCounter,@SuppressWarnings("rawtypes") ExecutorPool processorPool) {
 		super("ProcessorThread-");
 		this.setName(this.getName()+this.getId());
 		this.getThreadSleepTime = getThreadSleepTime;
 		this.getThreadShutdownCounter = getThreadShutdownCounter;
 		logger.info(this.getName()+" : launched");
+		this.processorPool = processorPool;
 	}	
 
 	@Override
@@ -58,6 +63,16 @@ public abstract class ProcessorThread extends Thread{
 
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	synchronized protected void removeFromPool() {
+		processorPool.removeInstanceToStack(this);
+	}
+
+	@SuppressWarnings("unchecked")
+	synchronized public void pushToPool() {
+		processorPool.pushInstanceToStack(this);		
+	}
 
 	
 	private void  shutdown(){		
@@ -66,14 +81,12 @@ public abstract class ProcessorThread extends Thread{
 		logger.info(this.getName()+" : shutdowned");		
 	}
 
-	protected abstract void removeFromPool();
 
 	private void pushInstanceToStack() {
 		this.cleanRequest();
 		pushToPool();
 	}
 	
-	protected abstract void pushToPool();
 
 	private void reset() {
 		count=0;

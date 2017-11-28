@@ -11,9 +11,8 @@ public class MassEngineProcessorThread extends ProcessorThread{
 
 	protected ExecutorPool<MassEngineProcessorThread> processorPool;
 
-	public MassEngineProcessorThread(ExecutorPool<MassEngineProcessorThread> massEngineProcessorPool,long getThreadSleepTime,long getThreadShutdownCounter) {
-		super(getThreadSleepTime,getThreadShutdownCounter);
-		this.processorPool = massEngineProcessorPool;
+	public MassEngineProcessorThread(ExecutorPool<MassEngineProcessorThread> processorPool,long getThreadSleepTime,long getThreadShutdownCounter) {
+		super(getThreadSleepTime,getThreadShutdownCounter,processorPool);
 		//this.dao = new MassEngineProcessorDAO();
 	}
 
@@ -29,14 +28,5 @@ public class MassEngineProcessorThread extends ProcessorThread{
 		
 	}
 
-	@Override
-	synchronized protected void removeFromPool() {
-		processorPool.removeInstanceToStack(this);
-	}
-
-	@Override
-	synchronized public void pushToPool() {
-		processorPool.pushInstanceToStack(this);		
-	}
 
 }

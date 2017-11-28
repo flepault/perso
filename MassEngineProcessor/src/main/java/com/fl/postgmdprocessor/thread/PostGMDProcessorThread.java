@@ -9,15 +9,12 @@ import com.fl.postgmdprocessor.dao.PostGMDProcessorDAO;
 
 public class PostGMDProcessorThread extends ProcessorThread{
 
-	private final static Logger logger = LoggerFactory.getLogger(PostGMDProcessorThread.class);	
-
-	protected ExecutorPool<PostGMDProcessorThread> processorPool;
+	private final static Logger logger = LoggerFactory.getLogger(PostGMDProcessorThread.class);		
 	
 	private PostGMDProcessorDAO dao ;
 
-	public PostGMDProcessorThread(ExecutorPool<PostGMDProcessorThread> massEngineProcessorPool,long getThreadSleepTime,long getThreadShutdownCounter,PostGMDProcessorDAO dao) {
-		super(getThreadSleepTime,getThreadShutdownCounter);
-		this.processorPool = massEngineProcessorPool;
+	public PostGMDProcessorThread(ExecutorPool<PostGMDProcessorThread> processorPool,long getThreadSleepTime,long getThreadShutdownCounter,PostGMDProcessorDAO dao) {
+		super(getThreadSleepTime,getThreadShutdownCounter,processorPool);
 		this.dao = dao;
 	}
 
@@ -29,14 +26,6 @@ public class PostGMDProcessorThread extends ProcessorThread{
 			
 	}
 
-	@Override
-	synchronized protected void removeFromPool() {
-		processorPool.removeInstanceToStack(this);
-	}
-
-	@Override
-	synchronized public void pushToPool() {
-		processorPool.pushInstanceToStack(this);		
-	}
+	
 
 }
