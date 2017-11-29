@@ -6,7 +6,7 @@ export ORACLE_SID=${ORACLE_SID}
 	
 echo "OnGoing PostGMDProcessor is starting..."		
 
-nohup ./PostGMDProcessor.jar --spring.profiles.active=ongoing --spring.config.name=postgmdprocessor.daily&
+nohup ./PostGMDProcessor.jar --spring.profiles.active=ongoing --spring.config.name=postgmdprocessor.ongoing&
 
 sleep 5
 MEP_PID=`ps -edf | grep $LOGNAME | grep "java" | grep "PostGMDProcessor"| grep "ongoing"| awk '{print $2}'`
