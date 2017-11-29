@@ -32,11 +32,11 @@ public class MassEngineProcessorServiceConfig extends WsConfigurerAdapter{
 	}
 
 	@Bean
-	public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet(ApplicationContext applicationContext) {
+	public ServletRegistrationBean messageDispatcherServlet(ApplicationContext applicationContext) {
 		MessageDispatcherServlet servlet = new MessageDispatcherServlet();
 		servlet.setApplicationContext(applicationContext);
 		servlet.setTransformWsdlLocations(true);
-		return new ServletRegistrationBean<MessageDispatcherServlet>(servlet, "/ws/*");
+		return new ServletRegistrationBean(servlet, "/ws/*");
 	}
 
 	@Bean(name = "MassEngineProcessorService")
