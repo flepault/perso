@@ -16,13 +16,34 @@
 			<build>
 				<plugins>
 					<plugin>
-						<artifactId>maven-jar-plugin</artifactId>
+						<artifactId>maven-resources-plugin</artifactId>
 						<configuration>
-							<finalName>${finalName}</finalName>
-							<excludes>
-								<exclude>**/postgmdprocessor/*</exclude>
-							</excludes>
+							<resources>
+								<resource>
+									<directory>src/main/resources</directory>
+									<excludes>
+										<exclude>postgmd*</exclude>
+									</excludes>
+								</resource>
+							</resources>
 						</configuration>
+					</plugin>
+					<plugin>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>default-compile</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>compile</goal>
+								</goals>
+								<configuration>
+									<excludes>
+										<exclude>**/postgmdprocessor/**</exclude>
+									</excludes>
+								</configuration>
+							</execution>
+						</executions>
 					</plugin>
 					<plugin>
 						<groupId>org.springframework.boot</groupId>
@@ -100,13 +121,34 @@
 			<build>
 				<plugins>
 					<plugin>
-						<artifactId>maven-jar-plugin</artifactId>
+						<artifactId>maven-resources-plugin</artifactId>
 						<configuration>
-							<finalName>${finalName}</finalName>
-							<excludes>
-								<exclude>**/massengineprocessor/*</exclude>
-							</excludes>
+							<resources>
+								<resource>
+									<directory>src/main/resources</directory>
+									<excludes>
+										<exclude>massengine*</exclude>
+									</excludes>
+								</resource>
+							</resources>
 						</configuration>
+					</plugin>
+					<plugin>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>default-compile</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>compile</goal>
+								</goals>
+								<configuration>
+									<excludes>
+										<exclude>**/massengineprocessor/**</exclude>
+									</excludes>
+								</configuration>
+							</execution>
+						</executions>
 					</plugin>
 					<plugin>
 						<groupId>org.springframework.boot</groupId>
@@ -145,14 +187,35 @@
 			<build>
 				<plugins>
 					<plugin>
-						<artifactId>maven-jar-plugin</artifactId>
+						<artifactId>maven-resources-plugin</artifactId>
 						<configuration>
-							<finalName>${finalName}</finalName>
-							<excludes>
-								<exclude>**/postgmdprocessor/*</exclude>
-								<exclude>**/massengineprocessor/*</exclude>
-							</excludes>
+							<resources>
+								<resource>
+									<directory>src/main/resources</directory>
+									<excludes>
+										<exclude>*</exclude>
+									</excludes>
+								</resource>
+							</resources>
 						</configuration>
+					</plugin>
+					<plugin>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>default-compile</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>compile</goal>
+								</goals>
+								<configuration>
+									<excludes>
+										<exclude>**/postgmdprocessor/**</exclude>
+										<exclude>**/massengineprocessor/**</exclude>
+									</excludes>
+								</configuration>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>
@@ -207,9 +270,12 @@
 					</execution>
 				</executions>
 			</plugin>
-
-
-
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<finalName>${finalName}</finalName>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
