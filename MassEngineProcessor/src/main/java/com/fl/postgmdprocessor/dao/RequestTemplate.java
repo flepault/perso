@@ -15,7 +15,7 @@ public class RequestTemplate {
 	
 	public static String SELECT_REQUEST_ONHOLD = "select 'CO_ID,'||co_id from oci_postgmd_on_hold where status = 2 and rownum <= 1000";
 
-	public static String SELECT_REQUEST_INT = "select contract from INT_CUSTOMER_DATA where LAST_UPDATE <= sysdate-1";
+	public static String SELECT_REQUEST_INT = "select contrat from AVISO_CUSTOMER_DATA where LAST_UPDATE <= sysdate-1";
 
 	public static String SELECT_REQUEST_WIMAX = "select co_id from WIMAX_CUSTOMER_DATA where LAST_UPDATE <= sysdate-1";
 
