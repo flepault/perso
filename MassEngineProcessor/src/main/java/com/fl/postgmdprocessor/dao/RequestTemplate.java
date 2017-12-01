@@ -17,7 +17,7 @@ public class RequestTemplate {
 
 	public static String SELECT_REQUEST_INT = "select contrat from AVISO_CUSTOMER_DATA where LAST_UPDATE <= sysdate-1";
 
-	public static String SELECT_REQUEST_WIMAX = "select co_id from WIMAX_CUSTOMER_DATA where LAST_UPDATE <= sysdate-1";
+	public static String SELECT_REQUEST_WIMAX = "select contrat from WIMAX_CUSTOMER_DATA where LAST_UPDATE <= sysdate-1";
 
 	public static String SELECT_REQUEST_GSM = "select co_id from GSM_CUSTOMER_DATA where LAST_UPDATE <= sysdate-8";
 	
