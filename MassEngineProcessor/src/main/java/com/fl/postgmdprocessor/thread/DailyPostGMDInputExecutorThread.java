@@ -2,6 +2,8 @@ package com.fl.postgmdprocessor.thread;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
@@ -15,6 +17,8 @@ import com.fl.postgmdprocessor.dao.PostGMDProcessorDAO;
 @Profile("daily")
 public class DailyPostGMDInputExecutorThread extends InputExecutorThread<PostGMDProcessorThread>{
 
+	private final static Logger logger = LoggerFactory.getLogger(DailyPostGMDInputExecutorThread.class);
+	
 	@Autowired
 	@Qualifier("PostGMDProcessorDAO")
 	private PostGMDProcessorDAO dao;
@@ -27,6 +31,8 @@ public class DailyPostGMDInputExecutorThread extends InputExecutorThread<PostGMD
 	protected void loadQueue() {		
 		
 		List<String> requestList = dao.getNewEntries();
+		
+		logger.info("Get new set of "+requestList.size()+" entries");
 		
 		if(requestList==null || requestList.size()==0)
 			close=true;
