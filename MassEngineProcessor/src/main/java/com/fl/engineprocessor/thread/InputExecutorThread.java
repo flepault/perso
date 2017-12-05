@@ -50,12 +50,12 @@ public abstract class InputExecutorThread<T extends ProcessorThread> extends Thr
 
 				if(queue.isEmpty()){				
 					try { 
-
-						loadQueue();
-
-						if(queue.isEmpty()){
+						
+						//if(queue.isEmpty()){
 							Thread.sleep(getInputThreadSleepTime); 
-						}
+						//}
+						
+						loadQueue();
 
 
 					}catch (InterruptedException e) {}						

@@ -34,7 +34,8 @@ public class OnGoingPostGMDInputExecutorThread extends InputExecutorThread<PostG
 		
 		List<String> list = dao.getNewEntries();
 		
-		logger.info("Get new set of "+list.size()+" entries");
+		if(list!=null)
+			logger.info("Get new set of "+list.size()+" entries");
 		
 		for(String str:list)
 			FileManagment.createFile(str);

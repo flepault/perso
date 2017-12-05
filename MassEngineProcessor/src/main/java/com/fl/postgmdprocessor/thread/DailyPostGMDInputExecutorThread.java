@@ -32,7 +32,8 @@ public class DailyPostGMDInputExecutorThread extends InputExecutorThread<PostGMD
 		
 		List<String> requestList = dao.getNewEntries();
 		
-		logger.info("Get new set of "+requestList.size()+" entries");
+		if(requestList!=null)
+			logger.info("Get new set of "+requestList.size()+" entries");
 		
 		if(requestList==null || requestList.size()==0)
 			close=true;

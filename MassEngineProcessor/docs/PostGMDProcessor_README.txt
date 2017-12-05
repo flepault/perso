@@ -15,11 +15,7 @@
 # LOG LEVEL # 
 #############
 
-To increase log level from INFO to DEBUG, you can replace:
-- postgmdprocessor.ongoing.info by postgmdprocessor.ongoing.debug 
-- postgmdprocessor.daily.info by postgmdprocessor.daily.debug
-
-in following files:
+To increase log level from INFO to DEBUG, you can update LOG_LEVEL value in following files:
 - startOnGoingPostGMDProcessor.sh
 - startDailyPostGMDProcessor.sh
 

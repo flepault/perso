@@ -3,6 +3,8 @@
 export DATABASE_SERVER=${SOISRV_DATABASE_SERVER}
 export DATABASE_PORT=${SOISRV_DATABASE_PORT}
 export ORACLE_SID=${ORACLE_SID}
+
+export LOG_LEVEL=INFO
 	
 echo "OnGoing PostGMDProcessor is starting..."		
 
