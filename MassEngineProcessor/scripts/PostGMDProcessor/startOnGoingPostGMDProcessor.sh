@@ -8,7 +8,7 @@ export LOG_LEVEL=INFO
 	
 echo "OnGoing PostGMDProcessor is starting..."		
 
-nohup ./PostGMDProcessor.jar --spring.profiles.active=ongoing --spring.config.name=postgmdprocessor.ongoing.info &
+nohup ./PostGMDProcessor.jar --spring.profiles.active=ongoing --spring.config.name=postgmdprocessor.ongoing &
 
 sleep 5
 MEP_PID=`ps -edf | grep $LOGNAME | grep "java" | grep "PostGMDProcessor"| grep "ongoing"| awk '{print $2}'`
