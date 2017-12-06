@@ -4,17 +4,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 
 import oracle.jdbc.OracleTypes;
 
 public class DailyPostGMDProcessorDAO extends PostGMDProcessorDAO{
+	
+	@Autowired
+	protected JdbcTemplate jdbcTemplate;
 
 	private boolean int_customer_data_done = false;
 	private boolean wimax_customer_data_done = false;
 	private boolean gsm_customer_data_done = false;
-
+	
+	private SimpleJdbcCall jdbcCallInt;
+	private SimpleJdbcCall jdbcCallWimax;
+	private SimpleJdbcCall jdbcCallGsm;
+	
+	@Override
+	public void init() {
+		this.jdbcCallInt = new SimpleJdbcCall(jdbcTemplate).withSchemaName("SPERTO").withCatalogName("OCI_POSTGMD").withProcedureName("DailySinglePostGMDInt").withoutProcedureColumnMetaDataAccess();
+		this.jdbcCallWimax = new SimpleJdbcCall(jdbcTemplate).withSchemaName("SPERTO").withCatalogName("OCI_POSTGMD").withProcedureName("DailySinglePostGMDWimax").withoutProcedureColumnMetaDataAccess();
+		this.jdbcCallGsm = new SimpleJdbcCall(jdbcTemplate).withSchemaName("SPERTO").withCatalogName("OCI_POSTGMD").withProcedureName("DailySinglePostGMDGsm").withoutProcedureColumnMetaDataAccess();
+	}
+	
 
 	private List<String> getNewEntriesInt() {
 
@@ -68,11 +84,11 @@ public class DailyPostGMDProcessorDAO extends PostGMDProcessorDAO{
 		SimpleJdbcCall jdbcCall = null;
 		
 		if(!int_customer_data_done){
-			jdbcCall = new SimpleJdbcCall(jdbcTemplate).withSchemaName("SPERTO").withCatalogName("OCI_POSTGMD").withProcedureName("DailySinglePostGMDInt");
+			jdbcCall = jdbcCallInt;
 		}else if(!wimax_customer_data_done){
-			jdbcCall = new SimpleJdbcCall(jdbcTemplate).withSchemaName("SPERTO").withCatalogName("OCI_POSTGMD").withProcedureName("DailySinglePostGMDWimax");
+			jdbcCall = jdbcCallWimax;
 		}else if(!gsm_customer_data_done){
-			jdbcCall = new SimpleJdbcCall(jdbcTemplate).withSchemaName("SPERTO").withCatalogName("OCI_POSTGMD").withProcedureName("DailySinglePostGMDGsm");
+			jdbcCall = jdbcCallGsm;
 		} else
 			return;
 

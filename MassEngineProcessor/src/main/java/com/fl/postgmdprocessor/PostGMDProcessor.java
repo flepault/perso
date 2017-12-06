@@ -73,7 +73,8 @@ public class PostGMDProcessor {
 	@Profile("daily")
 	public PostGMDProcessorDAO getDailyPostGMDProcessorDAO(){
 	
-		return new DailyPostGMDProcessorDAO();
+		DailyPostGMDProcessorDAO dao = new DailyPostGMDProcessorDAO();
+		return dao;
 		
 	}
 	
@@ -81,7 +82,8 @@ public class PostGMDProcessor {
 	@Profile("ongoing")
 	public PostGMDProcessorDAO getOnGoingPostGMDProcessorDAO(){
 			
-		return new OnGoingPostGMDProcessorDAO();
+		OnGoingPostGMDProcessorDAO dao = new OnGoingPostGMDProcessorDAO();	
+		return dao;
 		
 	}
 	

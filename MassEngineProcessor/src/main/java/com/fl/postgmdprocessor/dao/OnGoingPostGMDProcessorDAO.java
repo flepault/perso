@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
@@ -13,7 +15,18 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import oracle.jdbc.OracleTypes;
 
 public class OnGoingPostGMDProcessorDAO extends PostGMDProcessorDAO{
+	
+	@Autowired
+	protected JdbcTemplate jdbcTemplate;
 
+	private SimpleJdbcCall jdbcCallRequest;
+	private SimpleJdbcCall jdbcCallCoId;
+	
+	@Override
+	public void init() {
+		this.jdbcCallRequest = new SimpleJdbcCall(jdbcTemplate).withSchemaName("SPERTO").withCatalogName("OCI_POSTGMD").withProcedureName("OnGoingSinglePostGMDProcess").withoutProcedureColumnMetaDataAccess();
+		this.jdbcCallCoId = new SimpleJdbcCall(jdbcTemplate).withSchemaName("SPERTO").withCatalogName("OCI_POSTGMD").withProcedureName("OnGoingSinglePostGMDOnHold").withoutProcedureColumnMetaDataAccess();
+	}
 	
 	public void updateRequestStatus(List<String> list){
 		if(list!=null && list.size()!=0){
@@ -97,29 +110,24 @@ public class OnGoingPostGMDProcessorDAO extends PostGMDProcessorDAO{
 	private void singlePostGMDRequest(String str){
 
 
-		SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTemplate).withSchemaName("SPERTO").withCatalogName("OCI_POSTGMD").withProcedureName("OnGoingSinglePostGMDProcess");
-
-		jdbcCall.addDeclaredParameter(new SqlParameter("in_request",  OracleTypes.INTEGER));
+		jdbcCallRequest.addDeclaredParameter(new SqlParameter("in_request",  OracleTypes.INTEGER));
 
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("in_request",Integer.parseInt(str));
 
-		jdbcCall.execute(map);	
+		jdbcCallRequest.execute(map);	
 
 
 	}
 	
 	private void singlePostGMDCoid(String str){
 
-
-		SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTemplate).withSchemaName("SPERTO").withCatalogName("OCI_POSTGMD").withProcedureName("OnGoingSinglePostGMDOnHold");
-
-		jdbcCall.addDeclaredParameter(new SqlParameter("in_coId",  OracleTypes.INTEGER));
+		jdbcCallCoId.addDeclaredParameter(new SqlParameter("in_coId",  OracleTypes.INTEGER));
 
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("in_coId",Integer.parseInt(str));
 
-		jdbcCall.execute(map);	
+		jdbcCallCoId.execute(map);	
 
 
 	}

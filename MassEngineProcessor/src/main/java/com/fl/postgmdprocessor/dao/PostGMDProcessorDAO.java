@@ -15,5 +15,8 @@ public abstract class PostGMDProcessorDAO{
 	public abstract List<String> getNewEntries();	
 	
 	public abstract void singlePostGMD(String str);
+	
+	public abstract void init();
+	
 
 }
