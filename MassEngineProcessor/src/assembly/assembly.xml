@@ -17,10 +17,10 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>${project.basedir}</directory>
+			<directory>${project.basedir}/docs</directory>
 			<outputDirectory>.</outputDirectory>
 			<includes>
-				<include>InstallationStep.txt</include>
+				<include>${finalName}_README.txt</include>
 			</includes>
 		</fileSet>
 		<fileSet>
