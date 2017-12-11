@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameter;
@@ -15,6 +17,8 @@ public class DailyPostGMDProcessorDAO extends PostGMDProcessorDAO{
 	
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;
+	
+	private final static Logger logger = LoggerFactory.getLogger(DailyPostGMDProcessorDAO.class);
 
 	private boolean int_customer_data_done = false;
 	private boolean wimax_customer_data_done = false;
@@ -57,6 +61,7 @@ public class DailyPostGMDProcessorDAO extends PostGMDProcessorDAO{
 			List<String> list = getNewEntriesInt();
 			if(list==null || list.size()==0){
 				int_customer_data_done=true;
+				logger.info("All INTERNET customer data updated");
 				return getNewEntries();
 			}else
 				return list;
@@ -64,6 +69,7 @@ public class DailyPostGMDProcessorDAO extends PostGMDProcessorDAO{
 			List<String> list = getNewEntriesWimax();
 			if(list==null || list.size()==0){
 				wimax_customer_data_done=true;
+				logger.info("All WIMAX customer data updated");
 				return getNewEntries();
 			}else
 				return list;
@@ -71,6 +77,7 @@ public class DailyPostGMDProcessorDAO extends PostGMDProcessorDAO{
 			List<String> list = getNewEntriesGsm();
 			if(list==null || list.size()==0){
 				gsm_customer_data_done=true;
+				logger.info("All GSM customer data updated");
 				return getNewEntries();
 			}else
 				return list;
