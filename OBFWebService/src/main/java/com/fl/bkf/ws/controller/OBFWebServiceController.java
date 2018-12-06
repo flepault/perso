@@ -3,6 +3,7 @@ package com.fl.bkf.ws.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +22,7 @@ public class OBFWebServiceController {
 	@Autowired
 	private AuthenticateCustomerService authenticateCustomerService;
 
-	@RequestMapping("/CheckCommercialEligibility")
+	@GetMapping("/CheckCommercialEligibility")
 	public void checkCommercialEligibility(@RequestParam(value="operation") String operation,
 			@RequestParam(value="MSISDN") String MSISDN,
 			@RequestParam(value="IMSI") String IMSI) {
@@ -47,7 +48,7 @@ public class OBFWebServiceController {
 		return;
 	}
 
-	@RequestMapping("/AuthenticateCustomer")
+	@GetMapping("/AuthenticateCustomer")
 	public void authenticateCustomer(@RequestParam(value="CNIID") String cniID, 	
 			@RequestParam(value="2LDN") String LDN) {
 
