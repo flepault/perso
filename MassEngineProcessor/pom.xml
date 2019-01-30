@@ -69,7 +69,6 @@
 							</execution>
 						</executions>
 						<configuration>
-							<schemaDirectory>${project.basedir}/src/main/xsd/</schemaDirectory>
 							<outputDirectory>${project.basedir}/src/main/java</outputDirectory>
 							<clearOutputDir>false</clearOutputDir>
 						</configuration>
@@ -357,10 +356,11 @@
 
 
 		<dependency>
-			<groupId>com.oracle</groupId>
+			<groupId>oracle</groupId>
 			<artifactId>ojdbc6</artifactId>
-			<version>11.2.0.3</version>
-			<!-- <version>12.1.0.1</version> -->
+			<version>11.2.0.4</version>
+			<scope>system</scope>
+			<systemPath>${basedir}\lib\ojdbc6.jar</systemPath>
 		</dependency>
 
 	</dependencies>
